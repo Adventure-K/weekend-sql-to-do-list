@@ -5,7 +5,7 @@ function onReady() {
     console.log('jQ');
     $('#addBtn').on('click', handleAdd);
     $('#taskList').on('click', '.completeBtn', handleComplete);
-    // $('#taskList').on('click', '.deleteBtn', handleDelete);
+    $('#taskList').on('click', '.deleteBtn', handleDelete);
     retrieveTasks();
 }
 
@@ -69,7 +69,6 @@ function addTask(newTask) {
 
 function handleComplete() {
     const id = $(this).closest('tr').data('id');
-    console.log(id);
 
     $.ajax({
         method: 'PUT',
@@ -80,4 +79,19 @@ function handleComplete() {
     }).catch(function(err) {
         console.log('error in PUT', err);
     })
+}
+
+function handleDelete() {
+    const id = $(this).closest('tr').data('id');
+
+    $.ajax({
+        method: 'DELETE',
+        url: `/tasks/${id}`
+    }).then(function(response) {
+        console.log(response);
+        retrieveTasks();
+    }).catch(function(err) {
+        console.log('error in DELETE', err);
+    })
+
 }

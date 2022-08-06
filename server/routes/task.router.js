@@ -47,4 +47,19 @@ tasksRouter.put('/:id', (req, res) => {
         });
 });
 
+tasksRouter.delete('/:id', (req, res) => {
+    const id = req.params.id;
+    console.log('in task DELETE');
+    const command = `DELETE FROM "to-do"
+                    WHERE "id" = $1;`;
+    pool.query(command, [id])
+        .then(result => {
+            res.sendStatus(200);
+        }).catch(err => {
+            console.log('error in DELETE', err);
+        })
+})
+
+
+
 module.exports = tasksRouter;
