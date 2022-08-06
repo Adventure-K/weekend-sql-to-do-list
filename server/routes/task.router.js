@@ -32,5 +32,19 @@ tasksRouter.post('/', (req, res) => {
     });
 });
 
+tasksRouter.put('/:id', (req, res) => {
+    const id = req.params.id;
+    console.log('id is', id);
+    console.log('in task PUT');
+    const command = `UPDATE "to-do"
+                    SET "complete" = true
+                    WHERE "id" = $1`
+    pool.query(command, [id])
+        .then(result => {
+            res.sendStatus(200);
+        }).catch(err => {
+            console.log('error in PUT', err);
+        });
+});
 
 module.exports = tasksRouter;

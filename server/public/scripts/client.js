@@ -4,7 +4,7 @@ $(onReady);
 function onReady() {
     console.log('jQ');
     $('#addBtn').on('click', handleAdd);
-    // $('#taskList').on('click', '.completeBtn', handleComplete);
+    $('#taskList').on('click', '.completeBtn', handleComplete);
     // $('#taskList').on('click', '.deleteBtn', handleDelete);
     retrieveTasks();
 }
@@ -27,7 +27,7 @@ function publishTasks(tasks) {
     for (let task of tasks) {
         if (task.complete === false) {
         $('#taskList').append(`
-            <tr id=${task.id}>
+            <tr data-id=${task.id}>
                 <td>${task.task}</td>
                 <td><button class=completeBtn>Complete</button></td>
                 <td><button class=deleteBtn>Delete</button></td>
@@ -35,10 +35,11 @@ function publishTasks(tasks) {
             `)
         } else {
         $('#taskList').append(`
-            <tr id=${task.id}>
-                <td>${task.name}</td>
-            </tr>
+            <tr data-id=${task.id}>
+                <td>${task.task}</td>
+            <td><span class=completeMarker>Complete!</span></td>
             <td><button class=deleteBtn>Delete</button></td>
+            </tr>
             `)
         }
     }
@@ -63,5 +64,20 @@ function addTask(newTask) {
         retrieveTasks();
     }).catch(function(err) {
         console.log('error in POST', err);
+    })
+}
+
+function handleComplete() {
+    const id = $(this).closest('tr').data('id');
+    console.log(id);
+
+    $.ajax({
+        method: 'PUT',
+        url: `/tasks/${id}`,
+    }).then(function(response) {
+        console.log(response);
+        retrieveTasks();
+    }).catch(function(err) {
+        console.log('error in PUT', err);
     })
 }
