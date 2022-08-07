@@ -11,6 +11,9 @@ app.use(bodyParser.json());
 const tasksRouter = require('./routes/task.router.js');
 app.use('/tasks', tasksRouter);
 
+const timeRouter = require('./routes/time.router.js');
+app.use('/time', timeRouter);
+
 // app.use(express.urlencoded({extended: true}));
 app.use(express.static('server/public'))
 

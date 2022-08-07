@@ -38,8 +38,8 @@ function publishTasks(tasks) { // Write task list to DOM
         $('#taskList').append(`
             <tr class="complete" data-id=${task.id}>
                 <td>${task.task}</td>
-            <td><span class=completeMarker>Complete!</span></td>
-            <td>Completed: </td>
+            <td><span class=completeMarker>✓ ☞</span></td>
+            <td>Completed: <br>${task.timeComplete}</td>
             <td><button class=deleteBtn>Delete</button></td>
             </tr>
             `)
@@ -47,7 +47,7 @@ function publishTasks(tasks) { // Write task list to DOM
     }
 }
 
-function handleAdd() { // Package add request for transit to server
+function handleAdd() { // Package 'add task' user input for transit to server
     console.log('add submitted');
     newTask = $('#taskIn').val();
     console.log(newTask);
@@ -79,25 +79,28 @@ function addTask(newTask) { // Submit task add package to server
 
 function handleComplete() { // Submit request to server to mark task complete
     const id = $(this).closest('tr').data('id');
-    const timeComplete = new Date;
+    const date = new Date;
+    const timeComplete = date.toLocaleString();
     console.log(id);
     $.ajax({
         method: 'PUT',
         url: `/tasks/${id}`,
     }).then(function(response) {
         console.log(response);
-        handleTimeComplete(timeComplete);
+        // retrieveTasks();
+        handleTimeComplete(id, timeComplete);
     }).catch(function(err) {
         console.log('client PUT error', err);
     })
 }
 
-function handleTimeComplete(time) {
+function handleTimeComplete(id, time) {
     console.log('in handleTimeComplete', time);
-    const id = $(this).closest('tr').data('id');
+    // const id = $(this).closest('tr').data('id');
+    console.log('id:', id)
     $.ajax({
         method: 'PUT',
-        url: `/tasks/${id}`,
+        url: `/time/${id}`,
         data: {
             time: time
         }
