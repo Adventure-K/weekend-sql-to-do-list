@@ -11,7 +11,7 @@ timeRouter.put('/:id', (req, res) => { // Time complete request
     const command = `UPDATE "to-do"
                     SET "timeComplete" = $2
                     WHERE "id" = $1`
-    pool.query(command, values) // Request mark task complete to DB
+    pool.query(command, values) // Request add completion timestamp to DB
         .then(result => {
             res.sendStatus(200);
         }).catch(err => {

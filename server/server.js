@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-// Setup body parser - to translating request body into JSON
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -14,7 +13,7 @@ app.use('/tasks', tasksRouter);
 const timeRouter = require('./routes/time.router.js');
 app.use('/time', timeRouter);
 
-// app.use(express.urlencoded({extended: true}));
+// app.use(express.urlencoded({extended: true})); // Did not work for some reason.
 app.use(express.static('server/public'))
 
 const PORT = process.env.PORT || 5000;

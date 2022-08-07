@@ -46,7 +46,7 @@ tasksRouter.put('/:id', (req, res) => { // Mark complete request
         });
 });
 
-tasksRouter.delete('/:id', (req, res) => {
+tasksRouter.delete('/:id', (req, res) => { // Delete task
     const id = req.params.id;
     console.log('in task DELETE');
     const command = `DELETE FROM "to-do"

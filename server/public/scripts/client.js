@@ -94,7 +94,7 @@ function handleComplete() { // Submit request to server to mark task complete
     })
 }
 
-function handleTimeComplete(id, time) {
+function handleTimeComplete(id, time) { // Submit completion timestamp to server
     console.log('in handleTimeComplete', time);
     // const id = $(this).closest('tr').data('id');
     console.log('id:', id)
