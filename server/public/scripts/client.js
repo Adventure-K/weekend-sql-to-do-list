@@ -27,7 +27,7 @@ function publishTasks(tasks) { // Write task list to DOM
     for (let task of tasks) {
         if (task.complete === false) {
         $('#taskList').append(`
-            <tr data-id=${task.id}>
+            <tr class="incomplete" data-id=${task.id}>
                 <td>${task.task}</td>
                 <td><button class=completeBtn>Complete</button></td>
                 <td><button class=deleteBtn>Delete</button></td>
@@ -35,7 +35,7 @@ function publishTasks(tasks) { // Write task list to DOM
             `)
         } else { // Prescribe alternate appearance for completed tasks
         $('#taskList').append(`
-            <tr data-id=${task.id}>
+            <tr class="complete" data-id=${task.id}>
                 <td>${task.task}</td>
             <td><span class=completeMarker>Complete!</span></td>
             <td><button class=deleteBtn>Delete</button></td>
@@ -90,9 +90,25 @@ function handleComplete() { // Submit request to server to mark task complete
 }
 
 function handleDelete() { // Submit request to server to delete task from list
-    if (confirm("Do you really want to delete this task?")) {
-        const id = $(this).closest('tr').data('id');
+    const id = $(this).closest('tr').data('id');
 
+    if ($(this).closest('tr').attr('class') == 'incomplete') { // Requires user confirmation to delete incomplete tasks
+        if (confirm("Do you really want to delete this task?")) {
+
+            $.ajax({
+                method: 'DELETE',
+                url: `/tasks/${id}`
+            }).then(function(response) {
+                console.log(response);
+                retrieveTasks(); // Task removed from DOM
+            }).catch(function(err) {
+                console.log('client DELETE error', err);
+            })
+        } else {
+            console.log('delete aborted by user');
+            return;
+        }
+    } else {
         $.ajax({
             method: 'DELETE',
             url: `/tasks/${id}`
@@ -102,8 +118,5 @@ function handleDelete() { // Submit request to server to delete task from list
         }).catch(function(err) {
             console.log('client DELETE error', err);
         })
-    } else {
-        console.log('delete aborted by user');
-        return;
     }
 }

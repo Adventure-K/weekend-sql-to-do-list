@@ -1,5 +1,6 @@
 body {
-    background-color: bisque;
+    background-color: beige;
+    font-family: Tiro Gurmukhi, serif;
 }
 
 li {
@@ -7,23 +8,25 @@ li {
 }
 
 .deleteBtn {
-    color: white;
-    background-color: red;
+    background-color: rgb(255, 104, 104);
     display: block;
 }
 
 #addBtn {
-    color: white;
-    background-color: green;
+    background-color: rgb(95, 193, 95);
 }
 
 .completeBtn {
-    color: white;
-    background-color: blue;
+    background-color: skyblue;
 }
 
 .completeMarker {
-    color: blue;
+    color: darkblue;
+}
+
+.complete {
+    background-color: skyblue;
+    font-style: italic;
 }
 
 table {
@@ -34,7 +37,8 @@ table {
 }
 
 td {
-    padding-left: 5px;
+    padding: 15px;
+    border-bottom: solid darkblue 1px;
 }
 
 #col1 {
