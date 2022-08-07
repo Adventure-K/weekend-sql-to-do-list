@@ -22,6 +22,7 @@ li {
 
 .completeMarker {
     color: darkblue;
+    font-size: 30px;
 }
 
 .complete {
@@ -31,9 +32,10 @@ li {
 
 table {
     table-layout: fixed;
-    /* width: 70%; */
+    width: 75%;
     border-collapse: collapse;
     border: 1px solid darkblue;
+
 }
 
 td {
@@ -50,5 +52,9 @@ td {
 }
 
 #col3 {
-    width: 20%;
+    width: auto;
+}
+
+#col4 {
+    width: 20%;;
 }

@@ -30,6 +30,7 @@ function publishTasks(tasks) { // Write task list to DOM
             <tr class="incomplete" data-id=${task.id}>
                 <td>${task.task}</td>
                 <td><button class=completeBtn>Complete</button></td>
+                <td></td>
                 <td><button class=deleteBtn>Delete</button></td>
             </tr>
             `)
@@ -37,7 +38,8 @@ function publishTasks(tasks) { // Write task list to DOM
         $('#taskList').append(`
             <tr class="complete" data-id=${task.id}>
                 <td>${task.task}</td>
-            <td><span class=completeMarker>Complete!</span></td>
+            <td><span class=completeMarker>✓ ☞</span></td>
+            <td>Completed: <br>${task.timeComplete}</td>
             <td><button class=deleteBtn>Delete</button></td>
             </tr>
             `)
@@ -45,7 +47,7 @@ function publishTasks(tasks) { // Write task list to DOM
     }
 }
 
-function handleAdd() { // Package add request for transit to server
+function handleAdd() { // Package 'add task' user input for transit to server
     console.log('add submitted');
     newTask = $('#taskIn').val();
     console.log(newTask);
@@ -77,10 +79,31 @@ function addTask(newTask) { // Submit task add package to server
 
 function handleComplete() { // Submit request to server to mark task complete
     const id = $(this).closest('tr').data('id');
-
+    const date = new Date;
+    const timeComplete = date.toLocaleString();
+    console.log(id);
     $.ajax({
         method: 'PUT',
         url: `/tasks/${id}`,
+    }).then(function(response) {
+        console.log(response);
+        // retrieveTasks();
+        handleTimeComplete(id, timeComplete);
+    }).catch(function(err) {
+        console.log('client PUT error', err);
+    })
+}
+
+function handleTimeComplete(id, time) {
+    console.log('in handleTimeComplete', time);
+    // const id = $(this).closest('tr').data('id');
+    console.log('id:', id)
+    $.ajax({
+        method: 'PUT',
+        url: `/time/${id}`,
+        data: {
+            time: time
+        }
     }).then(function(response) {
         console.log(response);
         retrieveTasks(); // Task auto-updates to 'complete' on DOM
@@ -93,7 +116,7 @@ function handleDelete() { // Submit request to server to delete task from list
     const id = $(this).closest('tr').data('id');
 
     if ($(this).closest('tr').attr('class') == 'incomplete') { // Requires user confirmation to delete incomplete tasks
-        if (confirm("Do you really want to delete this task?")) {
+        if (confirm("This task has not been completed. Do you really want to delete it?")) {
 
             $.ajax({
                 method: 'DELETE',
