@@ -1,7 +1,7 @@
 console.log('js')
 $(onReady);
 
-function onReady() {
+function onReady() { // Click listeners and initial GET function call
     console.log('jQ');
     $('#addBtn').on('click', handleAdd);
     $('#taskList').on('click', '.completeBtn', handleComplete);
@@ -9,20 +9,20 @@ function onReady() {
     retrieveTasks();
 }
 
-function retrieveTasks() {
+function retrieveTasks() { // Retrieve tasks from database
     $.ajax({
         method: 'GET',
         url: '/tasks'
     }).then(function(response) {
         console.log('task list retrieved:')
         console.log(response);
-        publishTasks(response);
+        publishTasks(response); // Call tasklist DOM write function
     }).catch(function(err) {
-        console.log('error in GET', err)
+        console.log('client GET error', err)
     })
 }
 
-function publishTasks(tasks) {
+function publishTasks(tasks) { // Write task list to DOM
     $('#taskList').empty();
     for (let task of tasks) {
         if (task.complete === false) {
@@ -33,7 +33,7 @@ function publishTasks(tasks) {
                 <td><button class=deleteBtn>Delete</button></td>
             </tr>
             `)
-        } else {
+        } else { // Prescribe alternate appearance for completed tasks
         $('#taskList').append(`
             <tr data-id=${task.id}>
                 <td>${task.task}</td>
@@ -45,14 +45,22 @@ function publishTasks(tasks) {
     }
 }
 
-function handleAdd() {
+function handleAdd() { // Package add request for transit to server
     console.log('add submitted');
     newTask = $('#taskIn').val();
     console.log(newTask);
+    if (newTask.length < 1) {
+        alert('Please enter a task.');
+        return;
+    } else {
+    console.log(newTask);
     addTask(newTask);
+    $('#taskIn').val('');
+    }
 }
 
-function addTask(newTask) {
+function addTask(newTask) { // Submit task add package to server
+    console.log('sending add');
     $.ajax({
         method: 'POST',
         url: `/tasks`,
@@ -61,13 +69,13 @@ function addTask(newTask) {
         }
     }).then(function(response) {
         console.log(response);
-        retrieveTasks();
+        retrieveTasks(); // Rewrite task list to DOM - new task appears upon success
     }).catch(function(err) {
-        console.log('error in POST', err);
+        console.log('client POST error', err);
     })
 }
 
-function handleComplete() {
+function handleComplete() { // Submit request to server to mark task complete
     const id = $(this).closest('tr').data('id');
 
     $.ajax({
@@ -75,23 +83,27 @@ function handleComplete() {
         url: `/tasks/${id}`,
     }).then(function(response) {
         console.log(response);
-        retrieveTasks();
+        retrieveTasks(); // Task auto-updates to 'complete' on DOM
     }).catch(function(err) {
-        console.log('error in PUT', err);
+        console.log('client PUT error', err);
     })
 }
 
-function handleDelete() {
-    const id = $(this).closest('tr').data('id');
+function handleDelete() { // Submit request to server to delete task from list
+    if (confirm("Do you really want to delete this task?")) {
+        const id = $(this).closest('tr').data('id');
 
-    $.ajax({
-        method: 'DELETE',
-        url: `/tasks/${id}`
-    }).then(function(response) {
-        console.log(response);
-        retrieveTasks();
-    }).catch(function(err) {
-        console.log('error in DELETE', err);
-    })
-
+        $.ajax({
+            method: 'DELETE',
+            url: `/tasks/${id}`
+        }).then(function(response) {
+            console.log(response);
+            retrieveTasks(); // Task removed from DOM
+        }).catch(function(err) {
+            console.log('client DELETE error', err);
+        })
+    } else {
+        console.log('delete aborted by user');
+        return;
+    }
 }

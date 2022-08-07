@@ -1,5 +1,5 @@
-h1 {
-color: blue;
+body {
+    background-color: bisque;
 }
 
 li {
@@ -7,5 +7,44 @@ li {
 }
 
 .deleteBtn {
+    color: white;
+    background-color: red;
     display: block;
+}
+
+#addBtn {
+    color: white;
+    background-color: green;
+}
+
+.completeBtn {
+    color: white;
+    background-color: blue;
+}
+
+.completeMarker {
+    color: blue;
+}
+
+table {
+    table-layout: fixed;
+    /* width: 70%; */
+    border-collapse: collapse;
+    border: 1px solid darkblue;
+}
+
+td {
+    padding-left: 5px;
+}
+
+#col1 {
+    width: auto;
+}
+
+#col2 {
+    width: 20%;
+}
+
+#col3 {
+    width: 20%;
 }

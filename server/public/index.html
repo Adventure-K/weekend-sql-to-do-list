@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="vendors/jquery-3.6.0.min.js"></script>
     <script src="scripts/client.js"></script>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/style.css" type="text/css">
     <title>To-Do!</title>
 </head>
 <body>
@@ -16,10 +16,19 @@
     <input id="taskIn" placeholder="" type="text">
     <button id="addBtn">Add</button><br>
     <h2>Tasks</h2>
-    <table>
-        <tbody id="taskList">
-            
-        </tbody>
-    </table>
+    <div class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th id="col1"></th>
+                    <th id="col2"></th>
+                    <th id="col3"></th>
+                </tr>
+            </thead>
+            <tbody id="taskList">
+
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
