@@ -12,7 +12,7 @@ tasksRouter.get('/', (req, res) => { // Request task list from DB
         console.log('get DB result', result.rows);
         res.send(result.rows); // Forward to client
     }).catch(err => {
-        console.log('server GET error', err);
+        console.log('server GET', err);
         res.sendStatus(500);
     })
 })
@@ -27,14 +27,14 @@ tasksRouter.post('/', (req, res) => { // Add task request
         .then(result => {
         res.sendStatus(200);
     }).catch(err => {
-        console.log('server POST error', err);
+        console.log('server POST', err);
     });
 });
 
-tasksRouter.put('/:id', (req, res) => {
+tasksRouter.put('/:id', (req, res) => { // Mark complete request
     const id = req.params.id;
-    console.log('id is', id);
-    console.log('in task PUT');
+    console.log(id);
+    console.log('in task PUT (mark complete)');
     const command = `UPDATE "to-do"
                     SET "complete" = true
                     WHERE "id" = $1`
@@ -42,7 +42,23 @@ tasksRouter.put('/:id', (req, res) => {
         .then(result => {
             res.sendStatus(200);
         }).catch(err => {
-            console.log('server PUT error', err);
+            console.log('server PUT (mark)', err);
+        });
+});
+
+tasksRouter.put('/:id', (req, res) => { // Time complete request
+    const id = req.params.id;
+    const time = req.body.time;
+    const values = [id, time]
+    console.log('in task PUT (time complete)');
+    const command = `UPDATE "to-do"
+                    SET "timeComplete" = $2
+                    WHERE "id" = $1`
+    pool.query(command, values) // Request mark task complete to DB
+        .then(result => {
+            res.sendStatus(200);
+        }).catch(err => {
+            console.log('server PUT (time)', err);
         });
 });
 
@@ -55,7 +71,7 @@ tasksRouter.delete('/:id', (req, res) => {
         .then(result => {
             res.sendStatus(200);
         }).catch(err => {
-            console.log('server DELETE error', err);
+            console.log('server DELETE', err);
         })
 })
 

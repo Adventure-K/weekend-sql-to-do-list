@@ -31,7 +31,7 @@ li {
 
 table {
     table-layout: fixed;
-    /* width: 70%; */
+    width: 75%;
     border-collapse: collapse;
     border: 1px solid darkblue;
 }
@@ -51,4 +51,8 @@ td {
 
 #col3 {
     width: 20%;
+}
+
+#col4 {
+    width: auto;
 }
